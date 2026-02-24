@@ -1,12 +1,18 @@
 from flask import Flask, request, render_template
 import pandas as pd
 import joblib
+import os
 
 app = Flask(__name__)
 
-# Load model and columns
-model = joblib.load("model.pkl")
-columns = joblib.load("columns.pkl")
+# Load model safely
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+MODEL_PATH = os.path.join(BASE_DIR, "model", "model.pkl")
+COLUMNS_PATH = os.path.join(BASE_DIR, "columns.pkl")
+
+model = joblib.load(MODEL_PATH)
+columns = joblib.load(COLUMNS_PATH)
 
 @app.route('/')
 def home():
@@ -15,6 +21,10 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+
+    if model is None:
+        return "Model file not found. Please train the model first."
+
     # Get form values
     Age = float(request.form['Age'])
     Income = float(request.form['Income'])
@@ -33,10 +43,9 @@ def predict():
     LoanPurpose = float(request.form['LoanPurpose'])
     HasCoSigner = float(request.form['HasCoSigner'])
 
-    # Feature engineering (IMPORTANT — same as training)
+    # Feature engineering (same as training)
     EMI_Ratio = LoanAmount / Income
 
-    # Create dataframe
     input_data = pd.DataFrame([[
         Age, Income, LoanAmount, CreditScore, MonthsEmployed,
         NumCreditLines, InterestRate, LoanTerm, DTIRatio,
@@ -45,15 +54,12 @@ def predict():
         HasCoSigner, EMI_Ratio
     ]], columns=columns)
 
-    # Prediction
     prediction = model.predict(input_data)[0]
 
-    if prediction == 1:
-        result = "High Risk of Default"
-    else:
-        result = "Low Risk of Default"
+    result = "High Risk of Default" if prediction == 1 else "Low Risk of Default"
 
     return render_template("result.html", prediction=result)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
