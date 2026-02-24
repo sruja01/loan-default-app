@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loan Default Risk Predictor</title>
+</head>
+<body>
+
+    <h2>Loan Default Risk Prediction</h2>
+
+    <form action="/predict" method="post">
+
+        Age:
+        <input type="number" step="any" name="Age" required><br><br>
+
+        Income:
+        <input type="number" step="any" name="Income" required><br><br>
+
+        Loan Amount:
+        <input type="number" step="any" name="LoanAmount" required><br><br>
+
+        Credit Score:
+        <input type="number" step="any" name="CreditScore" required><br><br>
+
+        Months Employed:
+        <input type="number" step="any" name="MonthsEmployed" required><br><br>
+
+        Number of Credit Lines:
+        <input type="number" step="any" name="NumCreditLines" required><br><br>
+
+        Interest Rate:
+        <input type="number" step="any" name="InterestRate" required><br><br>
+
+        Loan Term:
+        <input type="number" step="any" name="LoanTerm" required><br><br>
+
+        DTI Ratio:
+        <input type="number" step="any" name="DTIRatio" required><br><br>
+
+        Education (Encoded Value):
+        <input type="number" name="Education" required><br><br>
+
+        Employment Type (Encoded Value):
+        <input type="number" name="EmploymentType" required><br><br>
+
+        Marital Status (Encoded Value):
+        <input type="number" name="MaritalStatus" required><br><br>
+
+        Has Mortgage (0 = No, 1 = Yes):
+        <input type="number" name="HasMortgage" required><br><br>
+
+        Has Dependents (0 = No, 1 = Yes):
+        <input type="number" name="HasDependents" required><br><br>
+
+        Loan Purpose (Encoded Value):
+        <input type="number" name="LoanPurpose" required><br><br>
+
+        Has Co-Signer (0 = No, 1 = Yes):
+        <input type="number" name="HasCoSigner" required><br><br>
+
+        <input type="submit" value="Predict">
+
+    </form>
+
+</body>
+</html>
